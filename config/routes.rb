@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get '/dashboard/new' => 'admin/dashboard#new', as: :new_dashboard
   post '/dashboard' => 'admin/dashboard#create', as: :create_dashboard
 
+  get '/portfolio' => 'trader#index', as: :user_dashboard
+
   root 'home#index'
 
   # Defines the root path route ("/")

@@ -65,3 +65,58 @@ body,html {
   width: 350px;
 }
 
+
+.dashboardContainer {
+  background-color: #ebca8a;
+  margin-left: 250px; 
+  margin-right: 250px; 
+
+}
+
+
+/* Add these styles to your custom stylesheet (e.g., application.scss) */
+
+.custom-navbar {
+  display: flex;
+  color: black;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 5rem; /* Adjust the padding as needed */
+}
+
+.custom-navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-navbar-item {
+  margin-right: 1rem; /* Adjust the spacing between items as needed */
+}
+
+.custom-navbar-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.custom-button {
+  
+  background-color: transparent; /* Set the background color for the button */
+  border: none;
+  cursor: pointer;
+  color: black;
+  font-size: 1.5rem;
+  font-weight:800;
+  
+}
+
+.custom-button:hover {
+  text-decoration: underline; /* Add underline effect on hover */
+}
+
+
+

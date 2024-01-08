@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>StockTrading</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  </head>
+<head>
+  <title>StockTrading</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+</head>
 
-  <body>
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns is-vcentered">
-            <div class="column">
-              <p class="title">
-                <%= image_tag('cool.png', alt: 'Logo', class: 'logo-icon', width: '50') %> ShibaFinance
-              </p>
-            </div>
-            
-            <% if user_signed_in? %>
-              <div class="column is-right">
-                <div id="navbarBasicExample" class="navbar-menu">
-                  <div class="navbar-start">
-                    <a class="navbar-item" href="<%= root_path %>">Home</a>
-                  </div>
-
-                  <div class="navbar-end">
-                    <div class="navbar-item">
-                      <div class="buttons">
-
-                       <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "" %> 
-                        <%= link_to "Edit registration", edit_user_registration_path, class: "" %>
-                        <!-- Add more navigational links as needed -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
+<body>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column">
+            <p class="title">
+              <%= image_tag('cool.png', alt: 'Logo', class: 'logo-icon', width: '50') %> ShibaFinance
+            </p>
           </div>
+
+       <div class="column">
+        <% if user_signed_in? %>
+        <nav class="custom-navbar" role="navigation" aria-label="main navigation">
+         <ul class="custom-navbar-menu">
+           <li class="custom-navbar-item">
+            <%= link_to 'Dashboard', current_user.admin? ? admin_dashboard_path : user_dashboard_path %>
+
+
+            </li>
+           <li class="custom-navbar-item">
+          <% if current_user.admin? %>
+            <a class="custom-navbar-link" href="<%= edit_admin_dashboard_path(current_user) %>">Account Options</a>
+          <% else %>
+          <a class="custom-navbar-link" href="<%= edit_user_registration_path %>">Account Options</a>
+          <% end %>
+          </li>
+          <li class="custom-navbar-item">
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "custom-button" %>
+            </li>
+        <!-- Add more navigational links as needed -->
+          </ul>
+          </nav>
+    <% end %>
+</div>
+
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <%= yield %>
-  </body>
+  <%= yield %>
+</body>
 </html>

@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       if resource.admin?
         admin_dashboard_path(id: current_user.id)
       else
-        root_path
+        user_dashboard_path
       end
     end
   end
