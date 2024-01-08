@@ -67,3 +67,6 @@ group :test do
 
   gem 'devise', '~> 4.9', '>= 4.9.3'
 end
+
+
+gem 'bulma-rails', '~> 0.9.4'

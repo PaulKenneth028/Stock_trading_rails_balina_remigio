@@ -1,13 +1,20 @@
-<% if user_signed_in? %>
-          <li class="nav-item">
-            <%= button_to 'Logout', destroy_user_session_path, method: :delete, class:'nav-link' %>
-</li>
-<%end%>
+<section class="hero is-fullheight">
+ 
+    <div class="container has-text-centered">
+      <div class="LandingBox box p-6">
+        <%= image_tag('cool.png', alt: 'Logo', class: 'logo-icon', width: '50') %>
+        <h1 class="title">ShibaFinance</h1>
+        <p class="subtitle">The Kawaii Way to Navigate the Stock Markets!</p>
 
-<% if user_signed_in? && current_user.admin? %>
-  <!-- Display content for admin users -->
-  <p>Welcome, Admin!</p>
-<% else %>
-  <!-- Display content for non-admin users or guests -->
-  <p>Welcome, User!</p>
-<% end %>
+       <div class="dashboardButtons">
+   <%= button_to 'Sign in', new_user_session_path, method: :get, class: 'sign-in-button button is-primary' %>
+    </div>
+    <%= link_to 'Sign up', new_user_registration_path, class: 'sign-up-button button is-link' %>
+      
+
+
+    </div>
+  </div>
+</section>
+
+

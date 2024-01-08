@@ -1,85 +1,44 @@
-<style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
+<section class="hero is-fullheight">
 
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-    }
+    <div class="container has-text-centered">
+      <div class="LandingBox box p-6">
+        <%= image_tag('cool.png', alt: 'Logo', class: 'logo-icon', width: '50') %>
+        <h1 class="title">ShibaFinance</h1>
+        <p class="subtitle">The Kawaii Way to Navigate the Stock Markets!</p>
 
-    section {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-    }
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'form' }) do |f| %>
+          <div class="field">
+            <%= f.label :email, class: 'label' %>
+            <div class="control">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'input' %>
+            </div>
+          </div>
 
-    h1, h2 {
-      color: #333;
-    }
+          <div class="field">
+            <%= f.label :password, class: 'label' %>
+            <div class="control">
+              <%= f.password_field :password, autocomplete: "current-password", class: 'input' %>
+            </div>
+          </div>
 
-    p {
-      color: #666;
-    }
+          <% if devise_mapping.rememberable? %>
+            <div class="field">
+              <div class="control">
+                <%= f.check_box :remember_me, class: 'checkbox' %>
+                <%= f.label :remember_me, class: 'checkbox-label' %>
+              </div>
+            </div>
+          <% end %>
 
-    form {
-      display: flex;
-      flex-direction: column;
-      margin-top: 20px;
-    }
+          <div class="field">
+            <div class="control">
+              <%= f.submit "Log in", class: 'button is-success' %>
+            </div>
+          </div>
+        <% end %>
 
-    label {
-      margin-bottom: 5px;
-    }
-
-    input {
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-    }
-
-    button {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-  </style>
-
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+   
+  
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</section>

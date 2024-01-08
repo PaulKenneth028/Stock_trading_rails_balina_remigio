@@ -2,14 +2,48 @@
 <html>
   <head>
     <title>StockTrading</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns is-vcentered">
+            <div class="column">
+              <p class="title">
+                <%= image_tag('cool.png', alt: 'Logo', class: 'logo-icon', width: '50') %> ShibaFinance
+              </p>
+            </div>
+            
+            <% if user_signed_in? %>
+              <div class="column is-right">
+                <div id="navbarBasicExample" class="navbar-menu">
+                  <div class="navbar-start">
+                    <a class="navbar-item" href="<%= root_path %>">Home</a>
+                  </div>
+
+                  <div class="navbar-end">
+                    <div class="navbar-item">
+                      <div class="buttons">
+
+                       <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "" %> 
+                        <%= link_to "Edit registration", edit_user_registration_path, class: "" %>
+                        <!-- Add more navigational links as needed -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <%= yield %>
   </body>
 </html>
