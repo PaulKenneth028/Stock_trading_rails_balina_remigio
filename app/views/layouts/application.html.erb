@@ -24,7 +24,8 @@
         <nav class="custom-navbar" role="navigation" aria-label="main navigation">
          <ul class="custom-navbar-menu">
            <li class="custom-navbar-item">
-            <%= link_to 'Dashboard', current_user.admin? ? admin_dashboard_path : user_dashboard_path %>
+            <%= link_to 'Dashboard', current_user.admin? ? admin_dashboard_path(id: current_user.id) : user_dashboard_path %>
+
 
 
             </li>

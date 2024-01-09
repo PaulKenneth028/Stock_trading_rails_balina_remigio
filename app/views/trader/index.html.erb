@@ -1,7 +1,44 @@
-
 <div class="dashboardContainer">
 
-<h1>Welcome back <%= current_user.first_name %> <%= current_user.last_name %>! </h1>
+  <!-- TOP BAR -->
+  <div class="columns is-centered">
+    <div class="dashboard-welcome column">
+      <h1>Welcome back <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
+    </div>
+  </div>
+  <!-- TOP BAR -->
 
+  <!-- UPPER GRID BOXES -->
+  <div class="columns">
+    <!-- GRID BOX 1 -->
+    <div class="column is-flex is-flex-shrinkless">
+      <div class="box is-shadowed">
+        <h1 class="title">Portfolio</h1>
+        <!-- Content for Grid Box 1 -->
+      </div>
+    </div>
+    <!-- GRID BOX 1 -->
+
+    <!-- GRID BOX 2 -->
+    <div class="column is-one-third">
+      <div class="box is-shadowed">
+        <h1 class="title">Transaction History</h1>
+        <!-- Content for Grid Box 2 -->
+      </div>
+    </div>
+    <!-- GRID BOX 2 -->
+  </div>
+  <!-- UPPER GRID BOXES -->
+
+  <!-- LOWER GRID BOX 3 (Spans 2 columns) -->
+  <div class="columns">
+    <div class="column is-full">
+      <div class="box is-shadowed">
+        <h1 class="title">Watchlist</h1>
+        <!-- Content for Grid Box 3 -->
+      </div>
+    </div>
+  </div>
+  <!-- LOWER GRID BOX 3 -->
 
 </div>

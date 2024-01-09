@@ -7,8 +7,8 @@ class Admin::DashboardController < ApplicationController
   end
 
   def show
-    # The 'show' action is usually used to display details of a single record.
-    # You might want to remove @users = User.all from here and use @user instead.
+    @user = current_user # Assuming you want to display details of the current user
+    @users = User.all # Or whatever logic you use to retrieve users
   end
 
   def new
