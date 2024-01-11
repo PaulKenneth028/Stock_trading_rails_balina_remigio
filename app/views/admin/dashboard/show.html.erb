@@ -1,90 +1,88 @@
 <div class="dashboardContainer">
-
-<div class="dashboardGrid">
-  <!-- TOP BAR -->
-  <div class="columns is-centered">
-    <div class="dashboard-welcome column">
-      <h1>ADMIN DASHBOARD</h1>
-      <h2>Welcome <%= @user.first_name %> <%= @user.last_name %>!</h2>
+  <div class="dashboardGrid">
+    <!-- TOP BAR -->
+    <div class="columns is-centered">
+      <div class="dashboard-welcome column">
+        <h1>ADMIN DASHBOARD</h1>
+        <h2>Welcome <%= @user.first_name %> <%= @user.last_name %>!</h2>
+      </div>
     </div>
-  </div>
-  <!-- TOP BAR -->
+    <!-- TOP BAR -->
 
-  <!-- UPPER GRID BOXES -->
-  <div class="columns">
-    <!-- GRID BOX 1 -->
-    <div class="column is-flex is-flex-shrinkless">
-      <div class="box is-shadowed">
-        <h1 class="title">Users</h1>
-        <h3>List of Users:</h3>
-        <table class="table is-fullwidth">
-          <!-- User information table -->
-          <thead>
+    <!-- UPPER GRID BOXES -->
+    <div class="columns">
+      <!-- GRID BOX 1 -->
+      <div class="column is-flex is-flex-shrinkless">
+        <div class="box is-shadowed">
+          <h1 class="title">Users</h1>
+          <h3>List of Users:</h3>
+          <table class="table is-fullwidth">
+            <!-- User information table -->
+            <thead>
             <tr>
               <th>Name</th>
               <th>Email Address</th>
               <th>Account Type</th>
               <th>Balance</th>
               <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @users.each do |user| %>
-              <tr>
-                <td><%= "#{user.first_name} #{user.last_name}" %></td>
-                <td><%= user.email %></td>
-                <td><%= user.admin? ? 'Admin' : 'Trader' %></td>
-                <td>$xxx,xxx</td>
-                <td>
-                  <%= link_to 'Edit', edit_admin_dashboard_path(id: user.id) %>
-                  <!-- Add more actions as needed -->
-                </td>
               </tr>
-              <!-- Add more user information as needed -->
-            <% end %>
+            </thead>
+            <tbody>
+            <% @users.each do |user| %>
+        <tr class="<%= user.admin? ? 'admin-row' : 'trader-row' %>">
+          <td><%= "#{user.first_name} #{user.last_name}" %></td>
+          <td><%= user.email %></td>
+          <td><%= user.admin? ? 'Admin' : 'Trader' %></td>
+          <td><%= number_to_currency(user.balance) %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_dashboard_path(id: user.id) %>
+          <!-- Add more actions as needed -->
+          </td>
+          </tr>
+    <!-- Add more user information as needed -->
+        <% end %>
           </tbody>
-        </table>
-        <%= link_to 'Create New User', '/dashboard/new' %>
+          </table>
+          <%= link_to 'Create New User', '/dashboard/new' %>
+        </div>
       </div>
-    </div>
-    <!-- GRID BOX 1 -->
+      <!-- GRID BOX 1 -->
 
-    <!-- GRID BOX 2 -->
-    <div class="column is-one-third">
-      <div class="box is-shadowed">
-        <h1 class="title">Pending Transactions</h1>
-        <!-- Placeholder content for Grid Box 2 -->
-        <p>Content for Grid Box 2 goes here.</p>
+      <!-- GRID BOX 2 -->
+      <div class="column is-one-third">
+        <div class="box is-shadowed">
+          <h1 class="title">Pending Transactions</h1>
+          <!-- Placeholder content for Grid Box 2 -->
+          <p>Content for Grid Box 2 goes here.</p>
+        </div>
       </div>
-    </div>
-    <!-- GRID BOX 2 -->
+      <!-- GRID BOX 2 -->
 
-    <!-- GRID BOX 3 -->
-    <div class="column is-one-third">
-      <div class="box is-shadowed">
-        <h1 class="title">New Users</h1>
-        <!-- Placeholder content for Grid Box 3 -->
-        <p>Content for Grid Box 3 goes here.</p>
+      <!-- GRID BOX 3 -->
+      <div class="column is-one-third">
+        <div class="box is-shadowed">
+          <h1 class="title">New Users</h1>
+          <!-- Placeholder content for Grid Box 3 -->
+          <p>Content for Grid Box 3 goes here.</p>
+        </div>
       </div>
+      <!-- GRID BOX 3 -->
     </div>
-    <!-- GRID BOX 3 -->
+    <!-- UPPER GRID BOXES -->
+
+    <!-- LOWER GRID BOX 4 -->
+    <div class="columns">
+      <!-- GRID BOX 4 (Spanning 3 columns) -->
+      <div class="column is-full">
+        <div class="box is-shadowed">
+          <h1 class="title">Watchlist</h1>
+          <!-- Placeholder content for Grid Box 4 -->
+          <p>Content for Grid Box 4 goes here.</p>
+        </div>
+      </div>
+      <!-- GRID BOX 4 -->
+    </div>
+    <!-- LOWER GRID BOX 4 -->
+
   </div>
-  <!-- UPPER GRID BOXES -->
-
-  <!-- LOWER GRID BOX 4 -->
-  <div class="columns">
-    <!-- GRID BOX 4 (Spanning 3 columns) -->
-    <div class="column is-full">
-      <div class="box is-shadowed">
-        <h1 class="title">Watchlist</h1>
-        <!-- Placeholder content for Grid Box 4 -->
-        <p>Content for Grid Box 4 goes here.</p>
-      </div>
-    </div>
-    <!-- GRID BOX 4 -->
-  </div>
-  <!-- LOWER GRID BOX 4 -->
-
-
-</div>
 </div>
