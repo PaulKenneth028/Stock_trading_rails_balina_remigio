@@ -11,9 +11,7 @@
     <!-- TOP BAR -->
 
     <!-- UPPER GRID BOXES -->
-    <div class="columns">
-      <!-- GRID BOX 1 -->
-      <div class="column is-flex is-flex-shrinkless">
+    <div class="columns">      <div class="column is-flex is-flex-shrinkless"></div>
         <div class="box is-shadowed">
           <h1 class="title">Users</h1>
           <h3>List of Users:</h3>
@@ -69,6 +67,8 @@
     <h1>Pending Accounts</h1>
     <table class="table is-fullwidth">
       <thead>
+      <!-- GRID BOX 1 -->
+
         <tr>
           <th>Name</th>
           <th>Email Address</th>
@@ -97,19 +97,62 @@
     </div>
     <!-- UPPER GRID BOXES -->
 
+
     <!-- LOWER GRID BOX 4 -->
     <div class="columns">
       <!-- GRID BOX 4 (Spanning 3 columns) -->
       <div class="column is-full">
         <div class="box is-shadowed">
           <h1 class="title">Watchlist</h1>
-          <!-- Placeholder content for Grid Box 4 -->
-          <p>Content for Grid Box 4 goes here.</p>
+
+          <!-- Display data for top stock symbols -->
+          <h2 class="subtitle">Top 10 Stocks</h2>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Company Name</th>
+                <th>Price</th>
+                <th>Change (1 Day)</th>
+                <th>Percent Change</th>
+                <th>Market Cap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @top_stocks_data.each do |top_stock| %>
+                <tr>
+                  <td><%= top_stock['symbol'] %></td>
+                  <td><%= top_stock['companyName'] %></td>
+                  <td><%= number_to_currency(top_stock['latestPrice'], precision: 2) %></td>
+                  <td>
+                    <% change = top_stock['change'].to_f %>
+                    <% if change.positive? %>
+                      <span style="color: green;">+<%= number_to_currency(change, precision: 2) %></span>
+                    <% elsif change.negative? %>
+                      <span style="color: red;"><%= number_to_currency(change, precision: 2) %></span>
+                    <% else %>
+                      <%= number_to_currency(change, precision: 2) %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% percent_change = top_stock['changePercent'].to_f * 100 %>
+                    <% if percent_change.positive? %>
+                      <span style="color: green;">+<%= number_to_percentage(percent_change, precision: 2) %></span>
+                    <% elsif percent_change.negative? %>
+                      <span style="color: red;"><%= number_to_percentage(percent_change, precision: 2) %></span>
+                    <% else %>
+                      <%= number_to_percentage(percent_change, precision: 2) %>
+                    <% end %>
+                  </td>
+                  <td><%= number_to_currency(top_stock['marketCap'], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
       <!-- GRID BOX 4 -->
     </div>
     <!-- LOWER GRID BOX 4 -->
-
   </div>
 </div>

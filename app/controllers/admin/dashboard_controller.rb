@@ -5,14 +5,26 @@ class Admin::DashboardController < ApplicationController
 
   def index
     @users = User.all
-    @pending_users = User.pending
   end
 
   def show
-    @user = current_user # Assuming you want to display details of the current user
-    @users = User.all # Or whatever logic you use to retrieve users
+    @user = current_user
+    @users = User.all
     @pending_users = User.pending
+    symbol = params[:symbol]
+    api_key = 'pk_3dbda283b9094177a492240a433bafa8'
+    iex_service = IexService.new(api_key)
+    
+    # Fetch stock data for the specified symbol (if any)
+    @stock_data = iex_service.stock_quote(symbol)
+    
+    # Fetch data for the top 10 stock symbols
+    top_stock_symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NVDA', 'PYPL', 'NFLX', 'INTC']
+    @top_stocks_data = top_stock_symbols.first(10).map do |top_symbol|
+      iex_service.stock_quote(top_symbol)
+    end
   end
+  
 
   def new
     @user = User.new
@@ -46,8 +58,8 @@ class Admin::DashboardController < ApplicationController
 
   def reject_user
     @user = User.find(params[:id])
-    @user.destroy
-    redirect_to admin_dashboard_index_path, notice: 'User rejected and deleted.'
+    @user.update(status: :pending)
+    redirect_to admin_dashboard_index_path, notice: 'User set as pending.'
   end
 
   private
