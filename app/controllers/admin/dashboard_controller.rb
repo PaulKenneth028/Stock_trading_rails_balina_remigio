@@ -1,9 +1,11 @@
+# app/controllers/admin/dashboard_controller.rb
 class Admin::DashboardController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_user, only: [:edit, :update, :show]
 
   def index
     @users = User.all
+    @pending_users = User.pending
   end
 
   def show
@@ -44,8 +46,8 @@ class Admin::DashboardController < ApplicationController
 
   def reject_user
     @user = User.find(params[:id])
-    @user.update(status: :pending)
-    redirect_to admin_dashboard_index_path, notice: 'User set as pending.'
+    @user.destroy
+    redirect_to admin_dashboard_index_path, notice: 'User rejected and deleted.'
   end
 
   private
