@@ -1,0 +1,124 @@
+<% if current_user.present? && current_user.approved? %>
+  <div class="dashboardContainer">
+    <!-- TOP BAR -->
+    <div class="columns is-centered">
+      <div class="dashboard-welcome column">
+        <h1>Welcome back <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
+      </div>
+    </div>
+    <!-- TOP BAR -->
+
+<!-- UPPER GRID BOXES -->
+<div class="columns">
+  <!-- GRID BOX 1 -->
+  <div class="column is-flex is-flex-shrinkless">
+    <div class="box is-shadowed">
+      <h1 class="title">Portfolio</h1>
+      <!-- Display Account Balance -->
+      <p>Account Balance: <%= number_to_currency(current_user.balance, precision: 2) %></p>
+
+      <!-- Stock Table -->
+      <% if @user_stocks.present? %>
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Stock Name</th>
+              <th>Amount Owned</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user_stocks.each do |user_stock| %>
+              <tr>
+                <td><%= user_stock.stock_symbol %></td>
+                <td><%= user_stock.stock_name %></td>
+                <td><%= user_stock.amount_owned %></td>
+                <td><%= number_to_currency(user_stock.stock_price, precision: 2) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No stocks in the portfolio</p>
+      <% end %>
+      <!-- End Stock Table -->
+
+      <!-- Content for Grid Box 1 -->
+    </div>
+  </div>
+  <!-- GRID BOX 1 -->
+
+  <!-- GRID BOX 2 -->
+  <div class="column is-one-third">
+    <div class="box is-shadowed">
+      <h1 class="title">Transaction History</h1>
+      <!-- Content for Grid Box 2 -->
+    </div>
+  </div>
+  <!-- GRID BOX 2 -->
+</div>
+    <!-- UPPER GRID BOXES -->
+
+    <!-- LOWER GRID BOX 3 (Spans 2 columns) -->
+    <div class="columns">
+      <div class="column is-full">
+        <div class="box is-shadowed">
+          <h1 class="title">Watchlist</h1>
+
+          <!-- Content for Grid Box 3 -->
+<% if @top_stocks_data.present? %>
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Price</th>
+        <th>Change (1 Day)</th>
+        <th>Percent Change</th>
+        <th>Market Cap</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @top_stocks_data.each do |stock_data| %>
+        <tr>
+          <td><%= stock_data['symbol'] %></td>
+          <td><%= stock_data['companyName'] %></td>
+          <td><%= number_to_currency(stock_data['latestPrice'], precision: 2) %></td>
+          <td>
+            <% change = stock_data['change'].to_f %>
+            <% if change.positive? %>
+              <span style="color: green;">+<%= number_to_currency(change, precision: 2) %></span>
+            <% elsif change.negative? %>
+              <span style="color: red;"><%= number_to_currency(change, precision: 2) %></span>
+            <% else %>
+              <%= number_to_currency(change, precision: 2) %>
+            <% end %>
+          </td>
+          <td>
+            <% percent_change = stock_data['changePercent'].to_f * 100 %>
+            <% if percent_change.positive? %>
+              <span style="color: green;">+<%= number_to_percentage(percent_change, precision: 2) %></span>
+            <% elsif percent_change.negative? %>
+              <span style="color: red;"><%= number_to_percentage(percent_change, precision: 2) %></span>
+            <% else %>
+              <%= number_to_percentage(percent_change, precision: 2) %>
+            <% end %>
+          </td>
+          <td><%= number_to_currency(stock_data['marketCap'], precision: 2) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No stock data available</p>
+<% end %>
+
+        </div>
+      </div>
+    </div>
+    <!-- LOWER GRID BOX 3 -->
+  </div>
+<% else %>
+  <%= render 'pending/index' %>
+<% end %>

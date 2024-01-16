@@ -1,0 +1,179 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import 'bulma';
+
+body,html {
+    margin: 0;
+    padding: 0;
+    background-color: #B9692E;
+  }
+
+.hero.is-primary {
+    background-color: #4E331B;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+  
+    .hero-body {
+      margin: 0;
+  
+    }
+  
+    .title {
+      color: black;
+      display: flex;
+      align-items: center;
+      font-size: 2rem;
+      width: 100%;
+  
+      .logo-icon {
+        margin-right: 10px;
+      }
+    }
+  }
+
+.LandingBox {
+  margin-top: 50px;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  background-color: #ABA193;
+  
+}
+
+.dashboardButtons {
+  margin-bottom: 20px;
+ 
+}
+
+.control {
+  width: 350px;
+}
+
+
+.dashboardContainer {
+  background-color: #ebca8a;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 0;
+
+  // Vertical centering using flexbox
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  // Add additional styling as needed
+}
+
+.dashboardGrid {
+  margin-right: 180px;
+  margin-bottom: 100px;
+}
+
+.dashboard-welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  margin-left: 50px;
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+.is-flex.is-flex-shrinkless {
+  // Add styling for the flexible grid box 1
+}
+
+.is-one-third {
+  // Add styling for grid boxes 2 and 3
+}
+
+.is-full {
+  // Add styling for grid box 4
+}
+
+
+.table td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* Add these styles to your custom stylesheet (e.g., application.scss) */
+
+.custom-navbar {
+  display: flex;
+  color: black;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 5rem; /* Adjust the padding as needed */
+}
+
+.custom-navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-navbar-item {
+  margin-right: 1rem; /* Adjust the spacing between items as needed */
+}
+
+.custom-navbar-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.custom-button {
+  
+  background-color: transparent; /* Set the background color for the button */
+  border: none;
+  cursor: pointer;
+  color: black;
+  font-size: 1.5rem;
+  font-weight:800;
+  
+}
+
+.custom-button:hover {
+  text-decoration: underline; /* Add underline effect on hover */
+}
+
+
+
+/* In your_stylesheet.css or style.scss */
+
+.admin-row {
+  background-color: #e6f7ff; /* Light blue background for admin rows */
+}
+
+.trader-row {
+  background-color: #f2f2f2; /* Light gray background for trader rows */
+}

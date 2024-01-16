@@ -1,3 +1,4 @@
+# app/controllers/admin/dashboard_controller.rb
 class Admin::DashboardController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_user, only: [:edit, :update, :show]
@@ -7,9 +8,23 @@ class Admin::DashboardController < ApplicationController
   end
 
   def show
-    # The 'show' action is usually used to display details of a single record.
-    # You might want to remove @users = User.all from here and use @user instead.
+    @user = current_user
+    @users = User.all
+    @pending_users = User.pending
+    symbol = params[:symbol]
+    api_key = 'pk_3dbda283b9094177a492240a433bafa8'
+    iex_service = IexService.new(api_key)
+    
+    # Fetch stock data for the specified symbol (if any)
+    @stock_data = iex_service.stock_quote(symbol)
+    
+    # Fetch data for the top 10 stock symbols
+    top_stock_symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NVDA', 'PYPL', 'NFLX', 'INTC']
+    @top_stocks_data = top_stock_symbols.first(10).map do |top_symbol|
+      iex_service.stock_quote(top_symbol)
+    end
   end
+  
 
   def new
     @user = User.new
@@ -35,6 +50,18 @@ class Admin::DashboardController < ApplicationController
     end
   end
 
+  def approve_user
+    @user = User.find(params[:id])
+    @user.update(status: :approved)
+    redirect_to admin_dashboard_index_path, notice: 'User approved successfully.'
+  end
+
+  def reject_user
+    @user = User.find(params[:id])
+    @user.update(status: :pending)
+    redirect_to admin_dashboard_index_path, notice: 'User set as pending.'
+  end
+
   private
 
   def authenticate_admin!
@@ -46,6 +73,6 @@ class Admin::DashboardController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :admin)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :admin)
   end
 end

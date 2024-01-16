@@ -1,7 +1,158 @@
-<h1>User Details</h1>
+<!-- app/views/admin/dashboard/show.html.erb -->
+<div class="dashboardContainer">
+  <div class="dashboardGrid">
+    <!-- TOP BAR -->
+    <div class="columns is-centered">
+      <div class="dashboard-welcome column">
+        <h1>ADMIN DASHBOARD</h1>
+        <h2>Welcome <%= @user.first_name %> <%= @user.last_name %>!</h2>
+      </div>
+    </div>
+    <!-- TOP BAR -->
 
-<p><strong>Email:</strong> <%= @user.email %></p>
-<p><strong>Admin:</strong> <%= @user.admin? ? 'Yes' : 'No' %></p>
+    <!-- UPPER GRID BOXES -->
+    <div class="columns">      <div class="column is-flex is-flex-shrinkless"></div>
+        <div class="box is-shadowed">
+          <h1 class="title">Users</h1>
+          <h3>List of Users:</h3>
+          <table class="table is-fullwidth">
+            <!-- User information table -->
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email Address</th>
+                <th>Account Type</th>
+                <th>Balance</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @users.each do |user| %>
+                <% if user.approved? %> <!-- Add this conditional check -->
+                  <tr class="<%= user.admin? ? 'admin-row' : 'trader-row' %>">
+                    <td><%= "#{user.first_name} #{user.last_name}" %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.admin? ? 'Admin' : 'Trader' %></td>
+                    <td><%= number_to_currency(user.balance) %></td>
+                    <td>
+                      <%= link_to 'Edit', edit_admin_dashboard_path(id: user.id), class: 'button is-link' %>
+                      <!-- Add more actions as needed -->
+                    </td>
+                  </tr>
+                <% end %>
+                <!-- Add more user information as needed -->
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to 'Create New User', '/dashboard/new', class: 'button is-primary' %>
+        </div>
+      </div>
+      <!-- GRID BOX 1 -->
 
-<%= link_to 'Back to Users', admin_dashboard_index_path %>
-<%= link_to 'Edit', edit_admin_dashboard_path %>
+      <!-- GRID BOX 2 -->
+      <div class="column is-one-third">
+        <div class="box is-shadowed">
+          <h1 class="title">Pending Transactions</h1>
+          <!-- Placeholder content for Grid Box 2 -->
+          <p>Content for Grid Box 2 goes here.</p>
+        </div>
+      </div>
+      <!-- GRID BOX 2 -->
+
+      <!-- GRID BOX 3 -->
+      <!-- GRID BOX 3 -->
+<div class="column is-one-third">
+  <div class="box is-shadowed">
+    <h1 class="title">New Users</h1>
+    <h1>Pending Accounts</h1>
+    <table class="table is-fullwidth">
+      <thead>
+      <!-- GRID BOX 1 -->
+
+        <tr>
+          <th>Name</th>
+          <th>Email Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pending_users.each do |user| %>
+          <tr>
+            <td><%= "#{user.first_name} #{user.last_name}" %></td>
+            <td><%= user.email %></td>
+            <td class="is-flex">
+              <%= button_to 'Approve', approve_user_admin_dashboard_path(user), method: :patch, class: 'button is-success mr-2' %>
+              <%= button_to 'Reject', reject_user_admin_dashboard_path(user), method: :patch, class: 'button is-danger' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- GRID BOX 3 -->
+
+      <!-- GRID BOX 3 -->
+
+    </div>
+    <!-- UPPER GRID BOXES -->
+
+
+    <!-- LOWER GRID BOX 4 -->
+    <div class="columns">
+      <!-- GRID BOX 4 (Spanning 3 columns) -->
+      <div class="column is-full">
+        <div class="box is-shadowed">
+          <h1 class="title">Watchlist</h1>
+
+          <!-- Display data for top stock symbols -->
+          <h2 class="subtitle">Top 10 Stocks</h2>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Company Name</th>
+                <th>Price</th>
+                <th>Change (1 Day)</th>
+                <th>Percent Change</th>
+                <th>Market Cap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @top_stocks_data.each do |top_stock| %>
+                <tr>
+                  <td><%= top_stock['symbol'] %></td>
+                  <td><%= top_stock['companyName'] %></td>
+                  <td><%= number_to_currency(top_stock['latestPrice'], precision: 2) %></td>
+                  <td>
+                    <% change = top_stock['change'].to_f %>
+                    <% if change.positive? %>
+                      <span style="color: green;">+<%= number_to_currency(change, precision: 2) %></span>
+                    <% elsif change.negative? %>
+                      <span style="color: red;"><%= number_to_currency(change, precision: 2) %></span>
+                    <% else %>
+                      <%= number_to_currency(change, precision: 2) %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% percent_change = top_stock['changePercent'].to_f * 100 %>
+                    <% if percent_change.positive? %>
+                      <span style="color: green;">+<%= number_to_percentage(percent_change, precision: 2) %></span>
+                    <% elsif percent_change.negative? %>
+                      <span style="color: red;"><%= number_to_percentage(percent_change, precision: 2) %></span>
+                    <% else %>
+                      <%= number_to_percentage(percent_change, precision: 2) %>
+                    <% end %>
+                  </td>
+                  <td><%= number_to_currency(top_stock['marketCap'], precision: 2) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- GRID BOX 4 -->
+    </div>
+    <!-- LOWER GRID BOX 4 -->
+  </div>
+</div>

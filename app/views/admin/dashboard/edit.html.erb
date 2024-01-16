@@ -1,17 +1,50 @@
-<h1>Edit User</h1>
+<div class="container">
+  <h1 class="title">Edit User</h1>
 
-<%= form_for(@user, url: admin_dashboard_path(@user), method: :patch) do |f| %>
-  <div>
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
+  <%= form_for(@user, url: admin_dashboard_path(@user), method: :patch, html: { class: 'form' }) do |f| %>
 
-  <div>
-    <%= f.label :admin %>
-    <%= f.check_box :admin %>
-  </div>
+    <div class="field">
+      <%= f.label :first_name, class: 'label' %>
+      <div class="control">
+        <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: "input" %>
+      </div>
+    </div>
 
-  <%= f.submit 'Update User' %>
-<% end %>
+    <div class="field">
+      <%= f.label :last_name, class: 'label' %>
+      <div class="control">
+        <%= f.text_field :last_name, autocomplete: "last_name", class: "input" %>
+      </div>
+    </div>
 
-<%= link_to 'Back to Users', admin_dashboard_index_path %>
+    <div class="field">
+      <%= f.label :email, class: 'label' %>
+      <div class="control">
+        <%= f.text_field :email, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :admin, class: 'label' %>
+      <label class="checkbox">
+        <%= f.check_box :admin %>
+        Admin
+      </label>
+    </div>
+
+    <div class="field">
+      <%= f.label :status, class: 'label' %>
+      <%= link_to 'Approve', admin_dashboard_path(id: @user.id), method: :patch %>
+      <%= link_to 'Reject', admin_dashboard_path(id: @user.id), method: :patch %>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= f.submit 'Update User', class: "button is-primary" %>
+      </div>
+    </div>
+
+  <% end %>
+
+  <%= link_to 'Back to Users', admin_dashboard_index_path, class: "button is-link" %>
+</div>

@@ -67,3 +67,10 @@ group :test do
 
   gem 'devise', '~> 4.9', '>= 4.9.3'
 end
+
+
+gem 'bulma-rails', '~> 0.9.4'
+
+gem 'iex-ruby-client', '~> 2.1'
+
+gem 'rest-client'
