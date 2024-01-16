@@ -1,5 +1,5 @@
+<% if current_user.present? && current_user.approved? %>
 <div class="dashboardContainer">
-
   <!-- TOP BAR -->
   <div class="columns is-centered">
     <div class="dashboard-welcome column">
@@ -40,5 +40,8 @@
     </div>
   </div>
   <!-- LOWER GRID BOX 3 -->
-
 </div>
+<%= render 'trader/index' %>
+<% else %>
+<%= render 'pending/index' %>
+<% end %>

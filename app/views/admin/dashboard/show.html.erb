@@ -62,8 +62,12 @@
       <div class="column is-one-third">
         <div class="box is-shadowed">
           <h1 class="title">New Users</h1>
-          <!-- Placeholder content for Grid Box 3 -->
-          <p>Content for Grid Box 3 goes here.</p>
+          <h1>Pending Accounts</h1>
+          <ul>
+            <% @pending_users.each do |user| %>
+              <li><%= user.email %></li>
+            <% end %>
+          </ul>
         </div>
       </div>
       <!-- GRID BOX 3 -->

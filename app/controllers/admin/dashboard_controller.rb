@@ -9,6 +9,7 @@ class Admin::DashboardController < ApplicationController
   def show
     @user = current_user # Assuming you want to display details of the current user
     @users = User.all # Or whatever logic you use to retrieve users
+    @pending_users = User.pending
   end
 
   def new
@@ -33,6 +34,18 @@ class Admin::DashboardController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def approve_user
+    @user = User.find(params[:id])
+    @user.update(status: :approved)
+    redirect_to admin_dashboard_index_path, notice: 'User approved successfully.'
+  end
+
+  def reject_user
+    @user = User.find(params[:id])
+    @user.update(status: :pending)
+    redirect_to admin_dashboard_index_path, notice: 'User set as pending.'
   end
 
   private
