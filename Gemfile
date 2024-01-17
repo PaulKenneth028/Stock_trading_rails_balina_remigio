@@ -74,3 +74,5 @@ gem 'bulma-rails', '~> 0.9.4'
 gem 'iex-ruby-client', '~> 2.1'
 
 gem 'rest-client'
+
+gem 'mailcatcher'

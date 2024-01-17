@@ -50,10 +50,22 @@ class Admin::DashboardController < ApplicationController
     end
   end
 
-  def approve_user
+  def destroy
     @user = User.find(params[:id])
-    @user.update(status: :approved)
-    redirect_to admin_dashboard_index_path, notice: 'User approved successfully.'
+    @user.destroy
+    redirect_to admin_dashboard_index_path, notice: 'User deleted successfully.'
+  end
+
+  def approve_user
+    def approve_user
+      @user = User.find(params[:id])
+      @user.update(status: :approved)
+  
+      # Send account approval email
+      UserMailer.account_approved(@user).deliver_now
+  
+      redirect_to admin_dashboard_index_path, notice: 'User approved successfully.'
+    end
   end
 
   def reject_user

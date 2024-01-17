@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       member do
         patch 'approve_user'
         patch 'reject_user'
+        delete :destroy
       end
     end
   end
