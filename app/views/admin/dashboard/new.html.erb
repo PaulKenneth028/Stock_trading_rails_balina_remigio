@@ -1,5 +1,8 @@
-<div class="container">
-  <h1 class="title">Add User</h1>
+<section class="hero is-fullheight">
+    <div class="container has-text-centered">
+
+<div class="LandingBox box p-6">
+  <h1 class="title is-size-1">Add User</h1>
 
   <%= form_for @user, url: admin_dashboard_index_path, html: { class: 'form' } do |f| %>
 
@@ -47,5 +50,8 @@
 
   <% end %>
 
-  <%= link_to 'Back to Users', admin_dashboard_index_path, class: "button is-link" %>
+  <%= link_to 'Back to Users', admin_dashboard_index_path, class: "button is-link mt-4" %>
 </div>
+
+</div>
+</section>
