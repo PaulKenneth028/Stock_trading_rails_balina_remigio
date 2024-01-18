@@ -3,7 +3,7 @@
 class StocksController < ApplicationController
     def show
       @symbol = params[:symbol]
-      
+      session[:current_stock_symbol] = @symbol
       # Fetching company information
       company_info = IEX::Resources::Company.get(@symbol)
       @company_name = company_info.company_name
@@ -21,5 +21,27 @@ class StocksController < ApplicationController
       # Example: Fetching historical prices (for illustration purposes)
       @historical_prices = IEX::Endpoints::Stock::Chart.range(@symbol, '1m', { chartCloseOnly: true })
     end
-  end
+
+    def buy
+      @user = current_user
+      @symbol = params[:symbol]
+      @quantity = params[:quantity].to_i
+  
+      quote = IEX::Resources::Quote.get(@symbol)
+      stock_price = quote.latest_price
+  
+      total_cost = stock_price * @quantity
+
+      if @user.balance >= total_cost
+          @user.update(balance: @user.balance - total_cost)
+           @user.stocks.find_or_create_by(symbol: @symbol) do |stock|
+           stock.quantity += @quantity
+            stock.average_price = ((stock.average_price * stock.quantity) + (stock_price * @quantity)) / (stock.quantity + @quantity)
+      end
+  
+        redirect_to stock_path(@symbol), notice: "Successfully bought #{@quantity} shares of #{@symbol}!"
+      else
+        redirect_to stock_path(@symbol), alert: "Insufficient balance to buy #{@quantity} shares of #{@symbol}."
+      end
+    end
   

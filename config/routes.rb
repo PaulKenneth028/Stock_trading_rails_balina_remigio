@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
+  
+  resources :stock_transactions, only: [:index, :create] do
+    post 'buy', on: :member
+    post 'sell', on: :member
+  end
 
   namespace :admin do
     resources :dashboard do

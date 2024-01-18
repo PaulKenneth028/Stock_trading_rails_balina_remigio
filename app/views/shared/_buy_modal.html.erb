@@ -1,0 +1,93 @@
+<div class="modal" id="buyModal<%= stock_data['symbol'] %>" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Buy <%= stock_data['symbol'] %> - <%= stock_data['companyName'] %></h5>
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display stock information -->
+        <p>Symbol: <%= stock_data['symbol'] %></p>
+        <p>Company Name: <%= stock_data['companyName'] %></p>
+        <p>Latest Price: <%= number_to_currency(stock_data['latestPrice']) %></p>
+
+        <!-- Form for buying stock -->
+        <%= form_with(model: [current_user, StockTransaction.new(stock_symbol: stock_data['symbol'])], url: stock_transactions_path, local: true, remote: true) do |f| %>
+          <%= f.hidden_field :transaction_type, value: 'buy' %>
+          <%= f.hidden_field :stock_symbol, value: stock_data['symbol'] %>
+          <%= f.hidden_field :latest_price, value: stock_data['latestPrice'] %>
+          
+          <div class="form-group">
+            <%= f.label :amount, 'Amount to Buy' %>
+            <%= f.number_field :amount, class: 'form-control', required: true %>
+          </div>
+
+          <%= f.submit 'Buy', class: 'btn btn-success' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let modal = document.getElementById('buyModal<%= stock_data["symbol"] %>');
+    let closeButton = modal.querySelector('.close');
+    let stockSymbolField = modal.querySelector('#stock_transaction_stock_symbol');
+    let stockPriceField = modal.querySelector('#stock_transaction_latest_price');
+
+    closeButton.addEventListener('click', function () {
+      closeModal();
+    });
+
+    window.addEventListener('click', function (event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    let buyButton = document.querySelector('.button.is-success-for-stock[data-symbol="<%= stock_data["symbol"] %>"]');
+    if (buyButton) {
+      buyButton.addEventListener('click', function () {
+        let stockSymbol = buyButton.getAttribute('data-symbol');
+        let stockPrice = buyButton.getAttribute('data-stock-price');
+
+        // Update modal content
+        document.querySelector(`#buyModal<%= stock_data["symbol"] %> .modal-title`).textContent = `Buy ${stockSymbol} - <%= stock_data["companyName"] %>`;
+
+        // Set stock symbol and price in form
+        stockSymbolField.value = stockSymbol;
+        stockPriceField.value = stockPrice;
+
+        // Show the modal
+        modal.style.display = 'block';
+      });
+    }
+
+    // Handle form submission via AJAX
+    let buyForm = document.querySelector('#buyModal<%= stock_data["symbol"] %> form');
+    buyForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      $.ajax({
+        type: buyForm.getAttribute('method'),
+        url: buyForm.getAttribute('action'),
+        data: buyForm.serialize(),
+        dataType: 'script',
+        success: function () {
+          closeModal();
+        }
+      });
+    });
+  });
+</script>

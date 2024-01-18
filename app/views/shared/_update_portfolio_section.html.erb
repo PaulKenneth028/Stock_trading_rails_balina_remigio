@@ -1,0 +1,30 @@
+<h1 class="title">Portfolio</h1>
+<p>Account Balance: <%= number_to_currency(current_user.balance, precision: 2) %></p>
+
+<!-- Stock Table -->
+<% if @user_stocks.present? %>
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Stock Name</th>
+        <th>Amount Owned</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user_stocks.each do |user_stock| %>
+        <tr>
+          <td><%= user_stock.stock_symbol %></td>
+          <td><%= user_stock.stock_name %></td>
+          <td><%= user_stock.amount_owned %></td>
+          <td><%= number_to_currency(user_stock.stock_price, precision: 2) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No stocks in the portfolio</p>
+<% end %>
+
+

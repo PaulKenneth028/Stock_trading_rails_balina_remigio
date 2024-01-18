@@ -1,0 +1,22 @@
+<h1>New Stock Transaction</h1>
+
+<%= form_with(model: @stock_transaction, url: stock_transactions_path, local: true) do |f| %>
+  <div class="field">
+    <%= f.label :transaction_type %>
+    <%= f.text_field :transaction_type %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stock_price %>
+    <%= f.text_field :stock_price %>
+  </div>
+
+  <div class="field">
+    <%= f.label :amount %>
+    <%= f.text_field :amount %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'Create Stock Transaction' %>
+  </div>
+<% end %>
