@@ -23,11 +23,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_073827) do
   end
 
   create_table "stocks", force: :cascade do |t|
+    t.string "symbol"
+    t.string "index"
+    t.string "true"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.integer "stock_transaction_id", null: false
-    t.string "symbol"
     t.index ["stock_transaction_id"], name: "index_stocks_on_stock_transaction_id"
     t.index ["user_id"], name: "index_stocks_on_user_id"
   end

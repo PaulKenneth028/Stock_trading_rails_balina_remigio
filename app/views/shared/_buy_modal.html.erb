@@ -76,18 +76,20 @@
     }
 
     // Handle form submission via AJAX
-    let buyForm = document.querySelector('#buyModal<%= stock_data["symbol"] %> form');
-    buyForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-      $.ajax({
-        type: buyForm.getAttribute('method'),
-        url: buyForm.getAttribute('action'),
-        data: buyForm.serialize(),
-        dataType: 'script',
-        success: function () {
-          closeModal();
-        }
-      });
-    });
+  // Handle form submission via AJAX
+let buyForm = document.querySelector('#buyModal<%= stock_data["symbol"] %> form');
+buyForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  $.ajax({
+    type: buyForm.getAttribute('method'),
+    url: buyForm.getAttribute('action'),
+    data: $(buyForm).serialize(), // Use jQuery to serialize the form
+    dataType: 'script',
+    success: function () {
+      closeModal();
+    }
+  });
+});
+
   });
 </script>
