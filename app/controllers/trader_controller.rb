@@ -22,6 +22,11 @@ class TraderController < ApplicationController
     end
   end
 
+  def update_portfolio_section
+    @user_stocks = current_user.stocks 
+    render partial: 'shared/update_portfolio_section', locals: { user_stocks: @user_stocks }, layout: false
+  end
+
   private
 
   def verify_approved

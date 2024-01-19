@@ -56,4 +56,12 @@ class StockTransactionsController < ApplicationController
       format.js { render partial: 'shared/update_portfolio_section', locals: { user_stocks: @user_stocks } }
     end
   end
+
+  def create_sell_transaction(user, stock_symbol, amount, stock_data)
+    # Implementation for sell transaction if needed
+  end
+
+  def stock_transaction_params
+    # Define your strong parameters if needed
+  end
 end
