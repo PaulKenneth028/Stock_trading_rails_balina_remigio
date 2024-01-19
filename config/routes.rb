@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   get '/portfolio' => 'trader#index', as: :user_dashboard
   get '/pending' => 'pending#index', as: :pending
+
+  get '/update_portfolio_section' => 'trader#update_portfolio_section', as: :update_portfolio_section
   root 'home#index'
 
   # Defines the root path route ("/")

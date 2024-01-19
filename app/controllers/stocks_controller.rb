@@ -1,52 +1,59 @@
-# app/controllers/stocks_controller.rb
+class StockTransactionsController < ApplicationController
+  before_action :authenticate_user!
 
-class StocksController < ApplicationController
-  def show
-    @symbol = params[:symbol]
-    session[:current_stock_symbol] = @symbol
+  def create
+    stock_symbol = params[:stock_transaction][:stock_symbol]
+    amount = params[:stock_transaction][:amount]
 
-    # Fetching company information
-    company_info = IEX::Resources::Company.get(@symbol)
-    @company_name = company_info.company_name
+    user_balance = current_user.balance
+    stock_data = get_stock_data(stock_symbol)
 
-    # Fetching quote information
-    quote = IEX::Resources::Quote.get(@symbol)
-    @price = quote.latest_price
-    @one_day_change = quote.change
+    if stock_data.present?
+      transaction_type = params[:stock_transaction][:transaction_type]
+      stock_price = stock_data['latestPrice']
+      total_transaction_cost = amount.to_f * stock_price
 
-    # You can add more information as needed
+      Rails.logger.debug "Transaction Type: #{transaction_type.inspect}"
+      Rails.logger.debug "User ID: #{current_user.id}"
+      Rails.logger.debug "Stock Symbol: #{stock_symbol}"
+      Rails.logger.debug "Amount: #{amount}"
+      Rails.logger.debug "User Balance: #{current_user.balance}"
 
-    # Example: Fetching additional information like the previous close
-    @previous_close = quote.previous_close
-
-    # Example: Fetching historical prices (for illustration purposes)
-    @historical_prices = IEX::Endpoints::Stock::Chart.range(@symbol, '1m', { chartCloseOnly: true })
+      if transaction_type.to_s.downcase == 'buy' && user_balance >= total_transaction_cost
+        create_buy_transaction(current_user, stock_symbol, amount.to_f, stock_data)
+        render json: { success: true, message: 'Stock purchase successful.' }
+      else
+        render json: { success: false, message: 'Insufficient funds or invalid transaction.' }
+      end
+    else
+      flash[:alert] = 'Failed to fetch stock data.'
+      redirect_to root_path
+    end
   end
 
-  def buy
-    @user = current_user
-    stock_params = params.permit(:symbol, :quantity)
-    @symbol = stock_params[:symbol]
-    @quantity = stock_params[:quantity].to_i
+  private
 
-    quote = IEX::Resources::Quote.get(@symbol)
-    stock_price = quote.latest_price
+  def get_stock_data(symbol)
+    iex_service = IexService.new('pk_3dbda283b9094177a492240a433bafa8')
+    iex_service.stock_quote(symbol)
+  end
 
-    total_cost = stock_price * @quantity
+  def create_buy_transaction(user, stock_symbol, amount, stock_data)
+    stock = Stock.find_or_create_by(symbol: stock_symbol)
 
-    ActiveRecord::Base.transaction do
-      if @user.balance >= total_cost
-        @user.update(balance: @user.balance - total_cost)
+    StockTransaction.create(
+      user: user,
+      transaction_type: 'buy',
+      stock: stock,
+      amount: amount,
+      stock_price: stock_data['latestPrice']
+    )
 
-        stock = @user.stocks.find_or_initialize_by(symbol: @symbol)
-        stock.quantity += @quantity
-        stock.average_price = ((stock.average_price * stock.quantity) + (stock_price * @quantity)) / (stock.quantity + @quantity)
-        stock.save!
+    user.update(balance: user.balance - amount * stock_data['latestPrice'])
+    @user_stocks = user.stocks_owned
 
-        redirect_to stock_path(@symbol), notice: "Successfully bought #{@quantity} shares of #{@symbol}!"
-      else
-        redirect_to stock_path(@symbol), alert: "Insufficient balance to buy #{@quantity} shares of #{@symbol}."
-      end
+    respond_to do |format|
+      format.js { render partial: 'shared/update_portfolio_section', locals: { user_stocks: @user_stocks } }
     end
   end
 end

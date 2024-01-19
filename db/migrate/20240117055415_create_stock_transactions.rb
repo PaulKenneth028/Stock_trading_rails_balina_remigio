@@ -4,7 +4,7 @@ class CreateStockTransactions < ActiveRecord::Migration[7.1]
       t.references :user, null: false, foreign_key: true
       t.string :stock_symbol
       t.string :transaction_type
-      t.decimal :stock_price
+      t.decimal :latest_price
       t.integer :amount
 
       t.timestamps

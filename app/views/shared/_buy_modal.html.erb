@@ -1,3 +1,40 @@
+<style>
+  #buyModal<%= stock_data['symbol'] %> {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
+  }
+
+  #buyModal<%= stock_data['symbol'] %> .modal-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 5px;
+  }
+
+  #buyModal<%= stock_data['symbol'] %> .modal-title {
+    text-align: center;
+  }
+
+  #buyModal<%= stock_data['symbol'] %> .modal-body {
+    text-align: center;
+  }
+
+  #buyModal<%= stock_data['symbol'] %> .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+</style>
+
 <div class="modal" id="buyModal<%= stock_data['symbol'] %>" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -19,6 +56,7 @@
           <%= f.hidden_field :stock_symbol, value: stock_data['symbol'] %>
           <%= f.hidden_field :latest_price, value: stock_data['latestPrice'] %>
           
+
           <div class="form-group">
             <%= f.label :amount, 'Amount to Buy' %>
             <%= f.number_field :amount, class: 'form-control', required: true %>
@@ -31,7 +69,6 @@
   </div>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
@@ -41,7 +78,6 @@
     let modal = document.getElementById('buyModal<%= stock_data["symbol"] %>');
     let closeButton = modal.querySelector('.close');
     let stockSymbolField = modal.querySelector('#stock_transaction_stock_symbol');
-    let stockPriceField = modal.querySelector('#stock_transaction_latest_price');
 
     closeButton.addEventListener('click', function () {
       closeModal();
@@ -61,35 +97,53 @@
     if (buyButton) {
       buyButton.addEventListener('click', function () {
         let stockSymbol = buyButton.getAttribute('data-symbol');
-        let stockPrice = buyButton.getAttribute('data-stock-price');
 
         // Update modal content
         document.querySelector(`#buyModal<%= stock_data["symbol"] %> .modal-title`).textContent = `Buy ${stockSymbol} - <%= stock_data["companyName"] %>`;
 
         // Set stock symbol and price in form
         stockSymbolField.value = stockSymbol;
-        stockPriceField.value = stockPrice;
+        stockPriceField.value = '<%= stock_data["latestPrice"] %>'; // Update this line
 
         // Show the modal
         modal.style.display = 'block';
       });
     }
 
-    // Handle form submission via AJAX
-  // Handle form submission via AJAX
-let buyForm = document.querySelector('#buyModal<%= stock_data["symbol"] %> form');
-buyForm.addEventListener('submit', function (event) {
-  event.preventDefault();
-  $.ajax({
-    type: buyForm.getAttribute('method'),
-    url: buyForm.getAttribute('action'),
-    data: $(buyForm).serialize(), // Use jQuery to serialize the form
-    dataType: 'script',
-    success: function () {
+    let buyForm = document.querySelector('#buyModal<%= stock_data["symbol"] %> form');
+    buyForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      $.ajax({
+  type: buyForm.getAttribute('method'),
+  url: buyForm.getAttribute('action'),
+  data: $(buyForm).serialize(),
+  dataType: 'json',
+  success: function (response) {
+    if (response.success) {
+      console.log(response.message);
       closeModal();
-    }
-  });
-});
 
+      // Fetch updated user stock data and replace the portfolio section content
+      $.ajax({
+        type: 'GET',
+        url: '/update_portfolio_section',
+        dataType: 'script',
+        success: function () {
+          console.log('Portfolio section updated successfully');
+        },
+        error: function (xhr, status, error) {
+          console.error('Failed to update the portfolio section', error);
+        }
+      });
+    } else {
+      console.error(response.message);
+      // Handle failure scenario
+    }
+  },
+  error: function (xhr, status, error) {
+    console.error('Failed to submit the form', error);
+  }
+});
+    });
   });
 </script>

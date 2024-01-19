@@ -9,10 +9,7 @@ class User < ApplicationRecord
   enum status: [:pending, :approved]
 
   has_many :user_stocks
-  
-  has_many :stocks
-  has_many :stock_transactions, through: :stocks
-
+  has_many :stocks, through: :user_stocks
 
   private
 
