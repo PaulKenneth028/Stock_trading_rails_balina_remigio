@@ -1,4 +1,3 @@
-# app/models/user.rb
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
@@ -11,8 +10,8 @@ class User < ApplicationRecord
 
   enum status: [:pending, :approved]
 
-  # has_many :user_stocks
-  # has_many :stocks, through: :user_stocks
+  has_many :user_stocks
+  has_many :stocks, through: :user_stocks
 
   private
 
