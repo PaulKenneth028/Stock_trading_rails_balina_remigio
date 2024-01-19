@@ -8,121 +8,129 @@
     </div>
     <!-- TOP BAR -->
 
-<!-- UPPER GRID BOXES -->
-<div class="columns">
-  <!-- GRID BOX 1 -->
-  <div class="column is-flex is-flex-shrinkless">
-    <div class="box is-shadowed">
-    <%= render partial: 'shared/update_portfolio_section' %>
-  <!-- Content for Grid Box 1 -->
-    </div>
-  </div>
-  <!-- GRID BOX 1 -->
+    <!-- UPPER GRID BOXES -->
+    <div class="columns">
+      <!-- GRID BOX 1 -->
+        <div class="user-portfolio box is-shadowed">
+          <h1 class="title">Portfolio</h1>
+          <!-- Display Account Balance -->
+          <p>Account Balance: <%= number_to_currency(current_user.balance, precision: 2) %></p>
 
-  <!-- GRID BOX 2 -->
-  <div class="column is-one-third">
-  <div class="box is-shadowed">
-    <h1 class="title">Transaction History</h1>
-    <% if @transaction_history.present? %>
-      <table class="table is-fullwidth">
-        <thead>
-          <tr>
-            <th>Transaction Type</th>
-            <th>Stock Symbol</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @transaction_history.each do |transaction| %>
-            <tr>
-              <td><%= transaction.transaction_type %></td>
-              <td><%= transaction.stock_symbol %></td>
-              <td><%= transaction.amount %></td>
-              <td><%= number_to_currency(transaction.stock_price, precision: 2) %></td>
-              <td><%= transaction.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-            </tr>
+          <!-- Stock Table -->
+          <% if @user_stocks.present? %>
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Stock Name</th>
+                  <th>Amount Owned</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @user_stocks.each do |user_stock| %>
+                  <tr>
+                    <td><%= user_stock.stock_symbol %></td>
+                    <td><%= user_stock.stock_name %></td>
+                    <td><%= user_stock.amount_owned %></td>
+                    <td><%= number_to_currency(user_stock.stock_price, precision: 2) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <p>No stocks in the portfolio</p>
           <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>No transaction history</p>
-    <% end %>
-      <!-- End Transaction History Table -->
+          <!-- End Stock Table -->
+      </div>
+      <!-- GRID BOX 1 -->
+
+      <!-- GRID BOX 2 -->
+ 
+        <div class="user-transaction-history box is-shadowed">
+          <h1 class="title">Transaction History</h1>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Stock Name</th>
+                <th>Amount Bought</th>
+                <th>Price Bought</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Content for Grid Box 2 -->
+            </tbody>
+          </table>
+        </div>
+      <!-- GRID BOX 2 -->
     </div>
-  </div>
-      <!-- Content for Grid Box 2 -->
-    </div>
-  </div>
-  <!-- GRID BOX 2 -->
-</div>
     <!-- UPPER GRID BOXES -->
 
     <!-- LOWER GRID BOX 3 (Spans 2 columns) -->
     <div class="columns">
-    <div class="column is-full">
-      <div class="box is-shadowed">
-        <h1 class="title">Watchlist</h1>
-  
-        <!-- Content for Grid Box 3 -->
-        <% if @top_stocks_data.present? %>
-          <table class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>Symbol</th>
-                <th>Company Name</th>
-                <th>Price</th>
-                <th>Change (1 Day)</th>
-                <th>Percent Change</th>
-                <th>Market Cap</th>
-                <!-- Add a new column for the Buy button -->
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @top_stocks_data.each do |stock_data| %>
+      <div class="column is-full">
+        <div class="user-stock-table box is-shadowed">
+          <h1 class="title">Watchlist</h1>
+
+          <!-- Content for Grid Box 3 -->
+          <% if @top_stocks_data.present? %>
+            <table class="table is-fullwidth">
+              <thead>
                 <tr>
-                  <td><%= stock_data['symbol'] %></td>
-                  <td><%= stock_data['companyName'] %></td>
-                  <td><%= number_to_currency(stock_data['latestPrice'], precision: 2) %></td>
-                  <td>
-                    <% change = stock_data['change'].to_f %>
-                    <% if change.positive? %>
-                      <span style="color: green;">+<%= number_to_currency(change, precision: 2) %></span>
-                    <% elsif change.negative? %>
-                      <span style="color: red;"><%= number_to_currency(change, precision: 2) %></span>
-                    <% else %>
-                      <%= number_to_currency(change, precision: 2) %>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% percent_change = stock_data['changePercent'].to_f * 100 %>
-                    <% if percent_change.positive? %>
-                      <span style="color: green;">+<%= number_to_percentage(percent_change, precision: 2) %></span>
-                    <% elsif percent_change.negative? %>
-                      <span style="color: red;"><%= number_to_percentage(percent_change, precision: 2) %></span>
-                    <% else %>
-                      <%= number_to_percentage(percent_change, precision: 2) %>
-                    <% end %>
-                  </td>
-                  <td><%= number_to_currency(stock_data['marketCap'], precision: 2) %></td>
+                  <th>Symbol</th>
+                  <th>Company Name</th>
+                  <th>Price</th>
+                  <th>Change (1 Day)</th>
+                  <th>Percent Change</th>
+                  <th>Market Cap</th>
                   <!-- Add the Buy button here -->
-                  <td>
-                    <!-- Customize the button to your needs -->
-                    <button class="button is-success is-success-for-stock" data-toggle="modal" data-target="#buyModal<%= stock_data['symbol'] %>">Buy</button>
-                    <%= render partial: 'shared/buy_modal', locals: { stock_data: stock_data } %>
-                  </td>
+                  <th>Action</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <p>No stock data available</p>
-        <% end %>
+              </thead>
+              <tbody>
+                <% @top_stocks_data.each do |stock_data| %>
+                  <tr>
+                    <td><%= stock_data['symbol'] %></td>
+                    <td><%= stock_data['companyName'] %></td>
+                    <td><%= number_to_currency(stock_data['latestPrice'], precision: 2) %></td>
+                    <td>
+                      <% change = stock_data['change'].to_f %>
+                      <% if change.positive? %>
+                        <span style="color: green;">+<%= number_to_currency(change, precision: 2) %></span>
+                      <% elsif change.negative? %>
+                        <span style="color: red;"><%= number_to_currency(change, precision: 2) %></span>
+                      <% else %>
+                        <%= number_to_currency(change, precision: 2) %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% percent_change = stock_data['changePercent'].to_f * 100 %>
+                      <% if percent_change.positive? %>
+                        <span style="color: green;">+<%= number_to_percentage(percent_change, precision: 2) %></span>
+                      <% elsif percent_change.negative? %>
+                        <span style="color: red;"><%= number_to_percentage(percent_change, precision: 2) %></span>
+                      <% else %>
+                        <%= number_to_percentage(percent_change, precision: 2) %>
+                      <% end %>
+                    </td>
+                    <td><%= number_to_currency(stock_data['marketCap'], precision: 2) %></td>
+                    <!-- Add the Buy button here -->
+                    <td>
+                      <!-- Customize the button to your needs -->
+                      <button class="button is-success is-success-for-stock" data-toggle="modal" data-target="#buyModal<%= stock_data['symbol'] %>">Buy</button>
+                      <button class="button is-danger">Sell</button>
+                      <%= render partial: 'shared/buy_modal', locals: { stock_data: stock_data } %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <p>No stock data available</p>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
     <!-- LOWER GRID BOX 3 -->
   </div>
 <% else %>

@@ -82,7 +82,8 @@ body,html {
 }
 
 .dashboardGrid {
-  margin-right: 180px;
+  margin-left: 150px;
+  margin-right: 150px;
   margin-bottom: 100px;
 }
 
@@ -187,4 +188,23 @@ body,html {
 .pendingInfo{
   font-size: 1.2rem;
   font-weight: 800;
+}
+
+
+
+
+.user-portfolio,
+.user-transaction-history {
+  width: 700px;
+  height: 200px;
+/* Adjust the margin as needed */
+}
+
+.user-portfolio{
+  margin-right: 70px;
+}
+
+.user-stock-table, .admin-stock-table{
+  width: 1500px;
+  margin-bottom: 100px;
 }
